@@ -1,0 +1,13 @@
+-e git+ssh://git@github.com/mikiyasegaye/Customer-Experience-Analytics-for-Fintech-Apps.git@daee0d81f47cab0a0428e4ce95a47421857a63e4#egg=bank_review_scraper
+google-play-scraper==1.2.4
+iniconfig==2.1.0
+numpy==1.26.3
+packaging==25.0
+pandas==2.1.4
+pluggy==1.6.0
+pytest==7.4.4
+python-dateutil==2.9.0.post0
+python-dotenv==1.0.0
+pytz==2025.2
+six==1.17.0
+tzdata==2025.2
