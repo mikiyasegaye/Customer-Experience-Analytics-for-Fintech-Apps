@@ -161,61 +161,226 @@ pip install -r requirements.txt
 ├── data/
 │   ├── raw/           # Raw scraped data
 │   └── processed/     # Cleaned and preprocessed data
+│       ├── sentiment_analysis_results.csv
+│       ├── thematic_analysis_results.csv
+│       └── theme_keywords.csv
 ├── database/          # Database files
 │   ├── dumps/         # Database backups
 │   └── migrations/    # Schema migrations
 ├── src/
-│   ├── config.py              # Configuration settings
+│   ├── config.py             # Configuration settings
 │   ├── scraper.py            # Web scraping functionality
 │   ├── preprocess.py         # Data preprocessing functionality
 │   ├── sentiment_analysis.py # Sentiment analysis module
 │   ├── thematic_analysis.py  # Thematic analysis module
-│   └── db_operations.py      # Database operations
-├── logs/              # Analysis and execution logs
+│   ├── db_operations.py      # Database operations
+│   └── insights_recommendations.py  # Visualization and insights generation
+├── visualizations/    # Generated visualization outputs
+│   ├── theme_analysis_dashboard.png
+│   ├── sentiment_trends_dashboard.png
+│   └── user_experience_dashboard.png
+├── logs/             # Analysis and execution logs
 └── tests/            # Unit tests
 ```
 
+## Visualization Dashboards
+
+The project includes three comprehensive visualization dashboards:
+
+### 1. Theme Analysis Dashboard
+
+- Theme Frequency Analysis
+- Theme Sentiment Analysis (color-coded)
+- Theme Evolution Over Time
+- Theme Co-occurrence Network
+
+### 2. Sentiment Trends Dashboard
+
+- Sentiment Score Distribution
+- Sentiment Over Time
+- Rating vs Sentiment Analysis
+- Theme Impact on Sentiment
+
+### 3. User Experience Dashboard
+
+- Rating Distribution Over Time
+- Theme Distribution by Rating
+- Theme Frequency by Rating Category
+- Sentiment-Rating Correlation
+
+To generate visualizations:
+
+```bash
+python src/insights_recommendations.py
+```
+
+## Analysis Pipeline
+
+1. **Data Collection** (`scraper.py`)
+
+   - Scrapes reviews from Google Play Store
+   - Handles rate limiting and error recovery
+
+2. **Preprocessing** (`preprocess.py`)
+
+   - Removes duplicates and invalid entries
+   - Standardizes dates and text format
+
+3. **Sentiment Analysis** (`sentiment_analysis.py`)
+
+   - Uses DistilBERT for sentiment classification
+   - Generates confidence scores
+
+4. **Thematic Analysis** (`thematic_analysis.py`)
+
+   - Extracts and categorizes themes
+   - Identifies key topics and patterns
+
+5. **Database Operations** (`db_operations.py`)
+
+   - Stores processed data
+   - Handles backups and migrations
+
+6. **Insights Generation** (`insights_recommendations.py`)
+   - Creates visualization dashboards
+   - Generates actionable insights
+   - Provides strategic recommendations
+
 ## Usage
 
-To scrape reviews:
+### 1. Data Collection
 
 ```bash
+# Scrape reviews from Google Play Store
 python src/scraper.py
+
+# Output: data/raw/bank_reviews_raw.csv
 ```
 
-To preprocess data:
+### 2. Data Preprocessing
 
 ```bash
+# Clean and prepare the data
 python src/preprocess.py
+
+# Output: data/processed/preprocessed_reviews.csv
 ```
 
-To run sentiment analysis:
+### 3. Sentiment Analysis
 
 ```bash
+# Run sentiment analysis on preprocessed data
 python src/sentiment_analysis.py
+
+# Output: data/processed/sentiment_analysis_results.csv
 ```
 
-To run thematic analysis:
+### 4. Thematic Analysis
 
 ```bash
+# Run thematic analysis
 python src/thematic_analysis.py
+
+# Outputs:
+# - data/processed/thematic_analysis_results.csv
+# - data/processed/theme_keywords.csv
 ```
 
-To run database operations (creates tables, imports data, and creates backup):
+### 5. Database Operations
 
 ```bash
-# Make sure your .env file is configured with database credentials
-python src/db_operations.py
+# Initialize database and run migrations
+python src/db_operations.py init
+
+# Import processed data
+python src/db_operations.py import
+
+# Create database backup
+python src/db_operations.py backup
+
+# Outputs:
+# - database/dumps/backup_YYYY_MM_DD.sql
+```
+
+### 6. Generate Insights and Visualizations
+
+```bash
+# Generate analysis dashboards and insights report
+python src/insights_recommendations.py
+
+# Outputs:
+# - visualizations/theme_analysis_dashboard.png
+# - visualizations/sentiment_trends_dashboard.png
+# - visualizations/user_experience_dashboard.png
 ```
 
 ## Output Files
 
-The analysis generates several output files:
+### Data Files
 
-1. `data/processed/processed_reviews.csv`: Cleaned and preprocessed reviews
-2. `data/processed/sentiment_analysis_results.csv`: Sentiment analysis results
-3. `data/processed/thematic_analysis_results.csv`: Theme classification results
-4. `data/processed/theme_keywords.csv`: Keywords associated with each theme
-5. `database/dumps/bank_reviews_dump_*.sql`: Database backups with timestamps
-6. `database/migrations/V1__initial_schema.sql`: Database schema version control
-7. `logs/`: Detailed execution logs with timestamps
+1. **Raw Data**
+
+   - `data/raw/bank_reviews_raw.csv`
+     - Raw scraped reviews
+     - Contains: review text, rating, date, app name, reviewer info
+
+2. **Processed Data**
+
+   - `data/processed/preprocessed_reviews.csv`
+
+     - Cleaned and standardized reviews
+     - Contains: cleaned text, normalized dates, bank names
+
+   - `data/processed/sentiment_analysis_results.csv`
+
+     - Sentiment analysis results
+     - Contains: review_id, sentiment_label, sentiment_score, confidence
+
+   - `data/processed/thematic_analysis_results.csv`
+
+     - Thematic analysis results
+     - Contains: review_id, themes (list), theme_confidence
+
+   - `data/processed/theme_keywords.csv`
+     - Theme definitions and keywords
+     - Contains: theme_name, keywords, description
+
+### Visualization Outputs
+
+1. **Theme Analysis Dashboard** (`visualizations/theme_analysis_dashboard.png`)
+
+   - Theme frequency distribution
+   - Sentiment by theme
+   - Theme evolution over time
+   - Theme correlations
+
+2. **Sentiment Trends Dashboard** (`visualizations/sentiment_trends_dashboard.png`)
+
+   - Overall sentiment distribution
+   - Temporal sentiment trends
+   - Rating-sentiment relationships
+   - Theme sentiment impact
+
+3. **User Experience Dashboard** (`visualizations/user_experience_dashboard.png`)
+   - Rating trends
+   - Theme-rating relationships
+   - High vs low rating analysis
+   - Sentiment-rating correlation
+
+### Database Files
+
+1. **Schema Migrations**
+
+   - `database/migrations/*.sql`
+   - Database structure and relationship definitions
+
+2. **Backups**
+   - `database/dumps/backup_YYYY_MM_DD.sql`
+   - Daily database snapshots
+   - Complete data preservation
+
+### Log Files
+
+- `logs/scraping_log.txt`: Data collection process logs
+- `logs/analysis_log.txt`: Analysis execution logs
+- `logs/error_log.txt`: Error tracking and debugging info
