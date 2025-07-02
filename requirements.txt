@@ -8,3 +8,5 @@ torch>=2.2.0
 scikit-learn==1.4.0
 spacy==3.7.2
 tqdm==4.66.1
+psycopg2-binary==2.9.9
+SQLAlchemy==2.0.25
